@@ -111,6 +111,10 @@ platform :ios do
       UI.error("⚠️ File process_symbols_il2cpp.sh không tồn tại!")
     end
 
+    # ✅ Tắt Gatekeeper trước khi archive
+    UI.message("🛑 Tắt Gatekeeper để cho phép mở ứng dụng từ mọi nguồn")
+    sh "sudo spctl --master-disable"
+
     # 🔥 Archive Project Xcode
     gym(
       scheme: SCHEME_NAME,
