@@ -105,6 +105,7 @@ platform :ios do
         signingCertificate: "Apple Distribution"
       },
       xcargs: "DEVELOPMENT_TEAM=#{TEAM_ID} -allowProvisioningUpdates"
+      suppress_xcode_output: false # Hiển thị log chi tiết trong console
     )
 
     
