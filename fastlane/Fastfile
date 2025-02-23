@@ -94,11 +94,16 @@ platform :ios do
       export_method: "app-store",
       export_options: {
         provisioningProfiles: {
-          APP_IDENTIFIER => "match AppStore #{APP_IDENTIFIER}"
-        }
+          "#{APP_IDENTIFIER}" => "match AppStore #{APP_IDENTIFIER}"
+        },
+        signingStyle: "manual",
+        teamID: "#{TEAM_ID}",
+        compileBitcode: false,
+        signingCertificate: "Apple Distribution"
       },
-      xcargs: "DEVELOPMENT_TEAM=#{TEAM_ID} -allowProvisioningUpdates -allowProvisioningDeviceRegistration"
+      xcargs: "DEVELOPMENT_TEAM=#{TEAM_ID} -allowProvisioningUpdates"
     )
+
     
     # ✅ Upload lên TestFlight
     upload_to_testflight(
