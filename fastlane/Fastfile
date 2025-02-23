@@ -36,7 +36,9 @@ platform :ios do
 
     # Mở khóa keychain
     sh "security unlock-keychain -p \"#{KEYCHAIN_PASSWORD}\" #{KEYCHAIN_NAME}"
-    sh "security set-key-partition-list -S apple-tool:,apple: -s -k \"#{KEYCHAIN_PASSWORD}\" #{KEYCHAIN_NAME}"
+    sh "security set-keychain-settings -t 3600 -u #{KEYCHAIN_NAME}" # Giữ keychain mở trong 1h
+    sh "security list-keychains -s #{KEYCHAIN_NAME}" # Đảm bảo keychain có trong danh sách được sử dụng
+    sh "security find-identity -v -p codesigning" # Debug kiểm tra certificate
 
     # Đảm bảo keychain có trong danh sách keychain được sử dụng
     sh "security list-keychains -s #{KEYCHAIN_NAME}"
