@@ -98,6 +98,10 @@ platform :ios do
       profile_name: "match AppStore #{APP_IDENTIFIER}"
     )
 
+    # ✅ Cấp quyền thực thi cho các script trước khi build
+    sh "chmod +x ./process_symbols.sh"
+    sh "chmod +x ./process_symbols_il2cpp.sh"
+
     # 🔥 Archive Project Xcode
     gym(
       scheme: SCHEME_NAME,
@@ -117,7 +121,6 @@ platform :ios do
       xcargs: "DEVELOPMENT_TEAM=#{TEAM_ID} -allowProvisioningUpdates",
       suppress_xcode_output: false # Hiển thị log chi tiết trong console
     )
-
     
     # ✅ Upload lên TestFlight
     upload_to_testflight(
