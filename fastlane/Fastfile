@@ -98,9 +98,18 @@ platform :ios do
       profile_name: "match AppStore #{APP_IDENTIFIER}"
     )
 
-    # ✅ Cấp quyền thực thi cho các script trước khi build
-    sh "chmod +x ./process_symbols.sh"
-    sh "chmod +x ./process_symbols_il2cpp.sh"
+    # ✅ Kiểm tra file có tồn tại trước khi chmod
+    if File.exist?("process_symbols.sh")
+      sh "chmod +x ./process_symbols.sh"
+    else
+      UI.error("⚠️ File process_symbols.sh không tồn tại!")
+    end
+  
+    if File.exist?("process_symbols_il2cpp.sh")
+      sh "chmod +x ./process_symbols_il2cpp.sh"
+    else
+      UI.error("⚠️ File process_symbols_il2cpp.sh không tồn tại!")
+    end
 
     # 🔥 Archive Project Xcode
     gym(
