@@ -97,7 +97,7 @@ platform :ios do
           APP_IDENTIFIER => "match AppStore #{APP_IDENTIFIER}"
         }
       },
-      xcargs: "DEVELOPMENT_TEAM=#{TEAM_ID} -allowProvisioningUpdates"
+      xcargs: "DEVELOPMENT_TEAM=#{TEAM_ID} -allowProvisioningUpdates -allowProvisioningDeviceRegistration"
     )
     
     # ✅ Upload lên TestFlight
