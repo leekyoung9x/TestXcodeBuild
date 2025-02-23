@@ -1,0 +1,111 @@
+default_platform(:ios)
+
+# 🔥 Định nghĩa biến GLOBAL
+KEYCHAIN_NAME = "fastlane_tmp.keychain"
+KEYCHAIN_PASSWORD = ENV["KEYCHAIN_PASSWORD"] || "1234"
+KEYCHAIN_PATH = "~/Library/Keychains/#{KEYCHAIN_NAME}-db"
+
+TARGET_NAME = "Unity-iPhone"
+SCHEME_NAME = "Unity-iPhone"
+APP_NAME = "Hat Second"
+APP_IDENTIFIER = "com.newworld.gods"
+TEAM_ID = "6VLL82FXHY"
+
+APPLE_KEY_ID = "F2FJR735SW"
+APPLE_ISSUER_ID = "c25c9a94-3764-4ecf-b9d8-63408ce4989d"
+APPLE_KEY_PATH = "./fastlane/AuthKey_#{APPLE_KEY_ID}.p8"
+
+VERSION_NUMBER = "1.0.0"  # 🔢 Đặt phiên bản ứng dụng
+BUILD_NUMBER = "4.0.2"    # 🔢 Đặt build number
+
+platform :ios do
+  desc "Setup Keychain for CI/CD"
+  lane :setup_keychain do
+    UI.message("🔐 Setting up keychain: #{KEYCHAIN_NAME}")
+
+    # Kiểm tra nếu keychain đã tồn tại
+    keychain_exists = File.exist?(File.expand_path(KEYCHAIN_PATH))
+
+    if keychain_exists
+      UI.message("✅ Keychain đã tồn tại, không cần tạo lại: #{KEYCHAIN_NAME}")
+    else
+      # Tạo keychain mới nếu chưa tồn tại
+      UI.message("🔄 Tạo mới keychain: #{KEYCHAIN_NAME}")
+      sh "security create-keychain -p \"#{KEYCHAIN_PASSWORD}\" #{KEYCHAIN_NAME}"
+    end
+
+    # Mở khóa keychain nếu chưa mở
+    sh "security unlock-keychain -p \"#{KEYCHAIN_PASSWORD}\" #{KEYCHAIN_NAME}"
+
+    # Đảm bảo keychain có trong danh sách
+    sh "security list-keychains -s #{KEYCHAIN_NAME}"
+
+    UI.message("✅ Keychain setup completed: #{KEYCHAIN_NAME}")
+  end
+
+  desc "Archive và Push lên TestFlight"
+  lane :beta do
+    # Setup Keychain trước khi bắt đầu
+    setup_keychain
+
+    # 🔥 Đặt biến môi trường cho Match
+    ENV["MATCH_PASSWORD"] ||= "hihi"
+    ENV["MATCH_KEYCHAIN_PASSWORD"] ||= KEYCHAIN_PASSWORD
+
+    # ✅ Cập nhật version và build number theo biến Global
+    increment_version_number(
+      version_number: VERSION_NUMBER,
+      xcodeproj: "./#{SCHEME_NAME}.xcodeproj"
+    )
+
+    increment_build_number(
+      build_number: BUILD_NUMBER,
+      xcodeproj: "./#{SCHEME_NAME}.xcodeproj"
+    )
+
+    UI.message("📢 Đang chuẩn bị archive: #{APP_NAME}")
+    UI.message("✅ Phiên bản: #{VERSION_NUMBER} (#{BUILD_NUMBER})")
+
+    # ✅ Thiết lập API Key từ Apple
+    api_key = app_store_connect_api_key(
+      key_id: APPLE_KEY_ID,
+      issuer_id: APPLE_ISSUER_ID,
+      key_filepath: APPLE_KEY_PATH,
+      duration: 1200,
+      in_house: false
+    )
+
+    # ✅ Lấy provisioning profile đúng cho cả UnityFramework và Unity-iPhone
+    match(
+      type: "appstore",
+      app_identifier: APP_IDENTIFIER,
+      api_key: api_key,
+      team_id: TEAM_ID,
+      keychain_name: KEYCHAIN_NAME,
+      readonly: false
+    )
+
+    # 🔥 Archive Project Xcode
+    gym(
+      scheme: SCHEME_NAME,
+      clean: true,
+      output_directory: "./build",
+      output_name: "#{APP_NAME}.ipa",
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+          APP_IDENTIFIER => "match AppStore #{APP_IDENTIFIER}"
+        }
+      },
+      xcargs: "DEVELOPMENT_TEAM=#{TEAM_ID} -allowProvisioningUpdates"
+    )
+    
+    # ✅ Upload lên TestFlight
+    upload_to_testflight(
+      api_key: api_key,
+      app_identifier: "com.newworld.gods"
+    )
+
+    UI.success("🎉 Ứng dụng #{APP_NAME} (#{VERSION_NUMBER} - Build #{BUILD_NUMBER}) đã được Archive và đẩy lên TestFlight thành công!")
+  end
+end
