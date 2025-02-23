@@ -1,0 +1,24 @@
+name: 🚀 iOS Build & Upload to TestFlight (Manual Trigger)
+
+on:
+  workflow_dispatch:  # Cho phép chạy thủ công từ GitHub Actions UI
+
+jobs:
+  fastlane:
+    name: 🚀 Build & Upload to TestFlight
+    runs-on: macos-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🛠 Set up Xcode
+        run: sudo xcode-select -switch /Applications/Xcode.app
+
+      - name: 🛠 Install dependencies (Bundler & Fastlane)
+        run: |
+          gem install bundler
+          bundle install || gem install fastlane
+
+      - name: 🚀 Run Fastlane
+        run: fastlane beta
