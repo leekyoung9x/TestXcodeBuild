@@ -88,12 +88,14 @@ platform :ios do
       readonly: false
     )
 
-    # Cập nhật cấu hình signing trong Xcode
+    # 🔥 Cập nhật cho Unity-iPhone (Target chính)
     update_code_signing_settings(
       use_automatic_signing: false,
-      team_id: "6VLL82FXHY",
+      path: "./#{SCHEME_NAME}.xcodeproj",
+      targets: ["Unity-iPhone"],
+      team_id: TEAM_ID,
       code_sign_identity: "Apple Distribution",
-      profile_name: "match AppStore com.arriety.fatmatchstudy"
+      profile_name: "match AppStore #{APP_IDENTIFIER}"
     )
 
     # 🔥 Archive Project Xcode
