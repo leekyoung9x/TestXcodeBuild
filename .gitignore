@@ -75,7 +75,6 @@ tmp/
 *.trace
 
 # === Ignore Unity Xcode Project ===
-Libraries/
 Temp/
 MemoryCaptures/
 
