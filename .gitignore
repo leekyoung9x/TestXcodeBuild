@@ -1,0 +1,85 @@
+# === macOS System Files ===
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# === Xcode ===
+xcuserdata/
+xcshareddata/
+*.xcscmblueprint
+*.xcworkspace
+*.xcuserstate
+project.xcworkspace/
+!default.xcworkspace
+
+# === Swift Package Manager ===
+.build/
+DerivedData/
+Packages/
+Package.resolved
+
+# === Carthage ===
+Carthage/Checkouts
+Carthage/Build
+
+# === CocoaPods ===
+Pods/
+Podfile.lock
+
+# === Fastlane ===
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+
+# === Xcode Derived Data & Index ===
+DerivedData/
+.idea/
+*.hmap
+*.lock
+*.xcuserdatad
+
+# === Simulator & Debugging ===
+*.mode1v3
+*.mode2v3
+*.moved-aside
+*.perspectivev3
+*.swp
+*.swo
+*.DS_Store
+*.pyc
+*.ipa
+*.dSYM.zip
+*.dSYM
+xcdebugger/
+
+# === Build & Temp Files ===
+build/
+tmp/
+*.app
+*.ipa
+*.dSYM
+*.swiftpm/
+*.xcodeproj/project.xcworkspace/
+!default.xcworkspace
+
+# === Git LFS ===
+*.lfsconfig
+
+# === Ignore Logs & Breakpoints ===
+*.log
+*.crash
+*.breakpoint
+*.trace
+
+# === Ignore Unity Xcode Project ===
+Libraries/
+Unity/
+Temp/
+MemoryCaptures/
+
+# === Environment Specific ===
+.env
+.env.*
