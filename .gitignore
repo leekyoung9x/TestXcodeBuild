@@ -76,7 +76,6 @@ tmp/
 
 # === Ignore Unity Xcode Project ===
 Libraries/
-Unity/
 Temp/
 MemoryCaptures/
 
