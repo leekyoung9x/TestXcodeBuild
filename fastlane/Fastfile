@@ -34,10 +34,11 @@ platform :ios do
       sh "security create-keychain -p \"#{KEYCHAIN_PASSWORD}\" #{KEYCHAIN_NAME}"
     end
 
-    # Mở khóa keychain nếu chưa mở
+    # Mở khóa keychain
     sh "security unlock-keychain -p \"#{KEYCHAIN_PASSWORD}\" #{KEYCHAIN_NAME}"
+    sh "security set-key-partition-list -S apple-tool:,apple: -s -k \"#{KEYCHAIN_PASSWORD}\" #{KEYCHAIN_NAME}"
 
-    # Đảm bảo keychain có trong danh sách
+    # Đảm bảo keychain có trong danh sách keychain được sử dụng
     sh "security list-keychains -s #{KEYCHAIN_NAME}"
 
     UI.message("✅ Keychain setup completed: #{KEYCHAIN_NAME}")
