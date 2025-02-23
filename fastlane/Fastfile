@@ -85,6 +85,13 @@ platform :ios do
       readonly: false
     )
 
+    update_project_provisioning(
+      xcodeproj: "./Unity-iPhone.xcodeproj",
+      profile: "/Users/runner/Library/MobileDevice/Provisioning Profiles/efbe50ea-8ec3-424b-a95b-6923aa432b7f.mobileprovision",
+      target_filter: "Unity-iPhone",
+      build_configuration: "Release"
+    )
+
     # 🔥 Archive Project Xcode
     gym(
       scheme: SCHEME_NAME,
