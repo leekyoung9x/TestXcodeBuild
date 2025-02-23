@@ -95,7 +95,10 @@ platform :ios do
       targets: ["Unity-iPhone"],
       team_id: TEAM_ID,
       code_sign_identity: "Apple Distribution",
-      profile_name: "match AppStore #{APP_IDENTIFIER}"
+      profile_name: "match AppStore #{APP_IDENTIFIER}",
+      build_settings: {
+        "LIBRARY_SEARCH_PATHS" => "$(SRCROOT)/Libraries $(SRCROOT)/Libraries/il2cpp $(SRCROOT)/Libraries/Unity"
+      }
     )
 
     # ✅ Kiểm tra file có tồn tại trước khi chmod
