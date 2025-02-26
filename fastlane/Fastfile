@@ -102,7 +102,7 @@ platform :ios do
     sh "ls -lah .."
 
     # ✅ Kiểm tra file có tồn tại trước khi chmod
-    script_path = "./process_symbols_il2cpp.sh"
+    script_path = "../process_symbols_il2cpp.sh"
     if File.exist?(script_path)
       sh "chmod +x #{script_path}"
     else
