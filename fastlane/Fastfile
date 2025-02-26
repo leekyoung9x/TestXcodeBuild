@@ -99,7 +99,7 @@ platform :ios do
     )
 
     UI.error("✅ Path list: ")
-    sh "ls -lah"
+    sh "ls -lah .."
 
     # ✅ Kiểm tra file có tồn tại trước khi chmod
     script_path = "./process_symbols_il2cpp.sh"
