@@ -118,6 +118,8 @@ platform :ios do
     UI.message("🛑 Tắt Gatekeeper để cho phép mở ứng dụng từ mọi nguồn")
     sh "sudo spctl --master-disable"
 
+    sh "xcrun xcodebuild -workspace Unity-iPhone.xcworkspace -scheme Unity-iPhone -sdk iphoneos -configuration Release build"
+
     # 🔥 Archive Project Xcode
     gym(
       scheme: SCHEME_NAME,
