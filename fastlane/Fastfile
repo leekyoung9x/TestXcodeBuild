@@ -98,6 +98,9 @@ platform :ios do
       profile_name: "match AppStore #{APP_IDENTIFIER}"
     )
 
+    UI.error("✅ Path list: ")
+    sh "ls -lah"
+
     # ✅ Kiểm tra file có tồn tại trước khi chmod
     if File.exist?("process_symbols.sh")
       sh "chmod +x process_symbols.sh"
