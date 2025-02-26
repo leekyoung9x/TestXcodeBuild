@@ -95,21 +95,18 @@ platform :ios do
       targets: ["Unity-iPhone"],
       team_id: TEAM_ID,
       code_sign_identity: "Apple Distribution",
-      profile_name: "match AppStore #{APP_IDENTIFIER}",
-      build_settings: {
-        "LIBRARY_SEARCH_PATHS" => "$(SRCROOT)/Libraries $(SRCROOT)/Libraries/il2cpp $(SRCROOT)/Libraries/Unity"
-      }
+      profile_name: "match AppStore #{APP_IDENTIFIER}"
     )
 
     # ✅ Kiểm tra file có tồn tại trước khi chmod
     if File.exist?("process_symbols.sh")
-      sh "chmod +x ./process_symbols.sh"
+      sh "chmod +x process_symbols.sh"
     else
       UI.error("⚠️ File process_symbols.sh không tồn tại!")
     end
   
     if File.exist?("process_symbols_il2cpp.sh")
-      sh "chmod +x ./process_symbols_il2cpp.sh"
+      sh "chmod +x process_symbols_il2cpp.sh"
     else
       UI.error("⚠️ File process_symbols_il2cpp.sh không tồn tại!")
     end
