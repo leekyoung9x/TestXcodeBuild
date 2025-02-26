@@ -102,10 +102,12 @@ platform :ios do
     sh "ls -lah"
 
     # ✅ Kiểm tra file có tồn tại trước khi chmod
-    if File.exist?("process_symbols.sh")
-      sh "chmod +x process_symbols.sh"
+    script_path = "./process_symbols_il2cpp.sh"
+    if File.exist?(script_path)
+      sh "chmod +x #{script_path}"
     else
-      UI.error("⚠️ File process_symbols.sh không tồn tại!")
+      UI.error("⚠️ File #{script_path} không tồn tại!")
+      sh "ls -lah" # In ra danh sách file trong thư mục hiện tại để debug
     end
   
     if File.exist?("process_symbols_il2cpp.sh")
@@ -118,7 +120,7 @@ platform :ios do
     UI.message("🛑 Tắt Gatekeeper để cho phép mở ứng dụng từ mọi nguồn")
     sh "sudo spctl --master-disable"
 
-    sh "xcrun xcodebuild -workspace Unity-iPhone.xcworkspace -scheme Unity-iPhone -sdk iphoneos -configuration Release build"
+    sh "xcrun xcodebuild -project Unity-iPhone.xcodeproj -scheme Unity-iPhone -sdk iphoneos -configuration Release build"
 
     # 🔥 Archive Project Xcode
     gym(
